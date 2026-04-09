@@ -1,6 +1,5 @@
-import { DashboardShell } from "@/features/dashboard/components/dashboard-shell";
+import { ProtectedPageTitle } from "@/components/layout/protected-page-title";
 
 export function DashboardPage() {
-  return <DashboardShell />;
+  return <ProtectedPageTitle title="Dashboard" />;
 }
-

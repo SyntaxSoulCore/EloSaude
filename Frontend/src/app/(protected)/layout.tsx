@@ -1,3 +1,4 @@
+import { ProtectedAppShell } from "@/components/layout/protected-app-shell";
 import { ProtectedRoute } from "@/features/auth/components/protected-route";
 
 export default function ProtectedLayout({
@@ -5,5 +6,9 @@ export default function ProtectedLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <ProtectedRoute>{children}</ProtectedRoute>;
+  return (
+    <ProtectedRoute>
+      <ProtectedAppShell>{children}</ProtectedAppShell>
+    </ProtectedRoute>
+  );
 }

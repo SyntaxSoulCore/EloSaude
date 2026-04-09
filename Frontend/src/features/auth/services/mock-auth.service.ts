@@ -4,14 +4,11 @@ import {
   type MockAccount,
   type RegisterPayload,
 } from "@/features/auth/types/auth.type";
-import {
-  AUTH_ACCOUNTS_STORAGE_KEY,
-  AUTH_COOKIE_NAME,
-} from "@/features/auth/utils/auth-storage";
+import { AUTH_ACCOUNTS_STORAGE_KEY, AUTH_COOKIE_NAME } from "@/features/auth/utils/auth-storage";
 
 const DEFAULT_ACCOUNT: MockAccount = {
   id: "default-demo-account",
-  fullName: "Equipe EloSaúde",
+  fullName: "Equipe ÉloSaúde",
   email: "demo@elosaude.com",
   password: "123456",
   createdAt: "2026-04-09T00:00:00.000Z",
@@ -63,20 +60,14 @@ function persistSession(email: string) {
   }
 
   document.cookie = `${AUTH_COOKIE_NAME}=${encodeURIComponent(
-    email
+    email,
   )}; path=/; max-age=${60 * 60 * 24 * 7}; samesite=lax`;
 }
 
-export function loginWithMockAccount({
-  email,
-  password,
-}: LoginPayload): AuthResult {
+export function loginWithMockAccount({ email, password }: LoginPayload): AuthResult {
   const normalizedEmail = normalizeEmail(email);
   const accounts = getStoredAccounts();
-  const account = accounts.find(
-    (item) =>
-      normalizeEmail(item.email) === normalizedEmail && item.password === password
-  );
+  const account = accounts.find((item) => normalizeEmail(item.email) === normalizedEmail && item.password === password);
 
   if (!account) {
     return {
@@ -93,16 +84,10 @@ export function loginWithMockAccount({
   };
 }
 
-export function registerMockAccount({
-  fullName,
-  email,
-  password,
-}: RegisterPayload): AuthResult {
+export function registerMockAccount({ fullName, email, password }: RegisterPayload): AuthResult {
   const normalizedEmail = normalizeEmail(email);
   const accounts = getStoredAccounts();
-  const existingAccount = accounts.find(
-    (item) => normalizeEmail(item.email) === normalizedEmail
-  );
+  const existingAccount = accounts.find((item) => normalizeEmail(item.email) === normalizedEmail);
 
   if (existingAccount) {
     return {
@@ -133,9 +118,7 @@ export function getCurrentSessionAccount() {
     return null;
   }
 
-  const cookieEntry = document.cookie
-    .split("; ")
-    .find((item) => item.startsWith(`${AUTH_COOKIE_NAME}=`));
+  const cookieEntry = document.cookie.split("; ").find((item) => item.startsWith(`${AUTH_COOKIE_NAME}=`));
 
   const sessionEmail = cookieEntry?.split("=")[1];
 
@@ -146,9 +129,7 @@ export function getCurrentSessionAccount() {
   const decodedEmail = decodeURIComponent(sessionEmail);
 
   return (
-    getStoredAccounts().find(
-      (item) => normalizeEmail(item.email) === normalizeEmail(decodedEmail)
-    ) ?? DEFAULT_ACCOUNT
+    getStoredAccounts().find((item) => normalizeEmail(item.email) === normalizeEmail(decodedEmail)) ?? DEFAULT_ACCOUNT
   );
 }
 
@@ -159,4 +140,3 @@ export function logoutMockAccount() {
 
   document.cookie = `${AUTH_COOKIE_NAME}=; path=/; max-age=0; samesite=lax`;
 }
-

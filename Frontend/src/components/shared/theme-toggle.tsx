@@ -26,7 +26,7 @@ const variantConfig: Record<
     buttonVariant: "ghost",
     size: "sm",
     className:
-      "size-10 rounded-lg border border-border/70 bg-surface p-0 hover:bg-muted dark:bg-surface dark:hover:bg-muted/80",
+      "size-10 rounded-lg border border-border bg-surface p-0 hover:bg-muted dark:bg-surface dark:hover:bg-muted",
     showLabel: false,
   },
   outline: {

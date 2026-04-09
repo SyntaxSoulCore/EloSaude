@@ -6,11 +6,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "EloSaúde",
-    template: "%s | EloSaúde",
+    default: "ÉloSaúde",
+    template: "%s | ÉloSaúde",
   },
-  description:
-    "Plataforma digital para acompanhamento clínico, monitoramento e conexão entre médicos e pacientes.",
+  description: "Plataforma digital para acompanhamento clínico, monitoramento e conexão entre médicos e pacientes.",
 };
 
 export default function RootLayout({
