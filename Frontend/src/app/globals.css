@@ -57,19 +57,19 @@
   --color-secondary-900: var(--secondary-900);
 
   /* Background */
-  --color-bg-default: var(--bg-default);
-  --color-bg-surface: var(--bg-surface);
-  --color-bg-muted: var(--bg-muted);
-  --color-bg-elevated: var(--bg-elevated);
+  --color-page: var(--bg-default);
+  --color-surface: var(--bg-surface);
+  --color-subtle: var(--bg-muted);
+  --color-elevated: var(--bg-elevated);
 
   /* Text */
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-muted: var(--text-muted);
+  --color-body: var(--text-primary);
+  --color-body-secondary: var(--text-secondary);
+  --color-body-muted: var(--text-muted);
 
   /* Border */
-  --color-border-default: var(--border-default);
-  --color-border-strong: var(--border-strong);
+  --color-outline: var(--border-default);
+  --color-outline-strong: var(--border-strong);
 
   /* Accent */
   --color-accent-success: var(--accent-success);
