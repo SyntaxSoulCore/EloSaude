@@ -9,4 +9,9 @@ export const runMigrations = (db: SQLiteDatabase) => {
   if (!cols.some((c) => c.name === 'notification_id')) {
     db.execSync('ALTER TABLE medication_schedules ADD COLUMN notification_id TEXT');
   }
+
+  const reminderColumns = db.getAllSync<{ name: string }>('PRAGMA table_info(reminders);');
+  if (!reminderColumns.some((column) => column.name === 'notification_id')) {
+    db.execSync('ALTER TABLE reminders ADD COLUMN notification_id TEXT;');
+  }
 };

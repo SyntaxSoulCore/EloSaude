@@ -7,22 +7,42 @@ import { ReminderToggleCard } from '@/src/components/health/ReminderToggleCard';
 import { Card } from '@/src/components/ui/Card';
 import { Button } from '@/src/components/ui/Button';
 import { getReminders, setReminderEnabled } from '@/src/database/db';
-import { ensureNotificationPermission, scheduleDailyNotification } from '@/src/services/notifications';
+import { cancelNotification, ensureNotificationPermission, scheduleDailyNotification } from '@/src/services/notifications';
+import type { Reminder } from '@/src/types/health';
 
 export default function RemindersScreen() {
-  const base = getReminders();
-  const [toggles, setToggles] = useState<Record<string, boolean>>(
-    Object.fromEntries(base.map((r) => [r.id, r.enabled === 1]))
-  );
+  const [reminders, setReminders] = useState<Reminder[]>(getReminders());
 
-  const toggle = async (id: string, title: string, time: string, next: boolean) => {
-    setToggles((prev) => ({ ...prev, [id]: next }));
-    setReminderEnabled(id, next);
+  const toggle = async (item: Reminder, next: boolean) => {
     if (next) {
       const granted = await ensureNotificationPermission();
-      if (granted) await scheduleDailyNotification(title, `Lembrete diário às ${time}`, time);
+      if (!granted) {
+        Alert.alert('Lembrete', 'Permissão de notificação não concedida.');
+        return;
+      }
+
+      const notificationId = await scheduleDailyNotification(item.title, `Lembrete diário às ${item.time}`, item.time);
+      setReminderEnabled(item.id, true, notificationId);
+      setReminders((prev) =>
+        prev.map((reminder) =>
+          reminder.id === item.id ? { ...reminder, enabled: 1, notification_id: notificationId } : reminder
+        )
+      );
+      Alert.alert('Lembrete', 'Lembrete ativado.');
+      return;
     }
-    Alert.alert('Lembrete', next ? 'Lembrete ativado.' : 'Lembrete desativado.');
+
+    if (item.notification_id) {
+      await cancelNotification(item.notification_id);
+    }
+
+    setReminderEnabled(item.id, false, null);
+    setReminders((prev) =>
+      prev.map((reminder) =>
+        reminder.id === item.id ? { ...reminder, enabled: 0, notification_id: null } : reminder
+      )
+    );
+    Alert.alert('Lembrete', 'Lembrete desativado.');
   };
 
   return (
@@ -36,13 +56,13 @@ export default function RemindersScreen() {
           </Card>
 
           <Text style={{ fontWeight: '700' }}>Lembretes ativos</Text>
-          {base.map((item) => (
+          {reminders.map((item) => (
             <ReminderToggleCard
               key={item.id}
               title={item.title}
               subtitle={`Todos os dias — ${item.time}`}
-              value={!!toggles[item.id]}
-              onValueChange={(next) => toggle(item.id, item.title, item.time, next)}
+              value={item.enabled === 1}
+              onValueChange={(next) => toggle(item, next)}
             />
           ))}
           <Button title="+ Novo lembrete" />

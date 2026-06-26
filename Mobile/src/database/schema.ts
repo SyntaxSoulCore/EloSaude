@@ -43,6 +43,7 @@ export const schemaStatements = [
     title TEXT NOT NULL,
     time TEXT NOT NULL,
     enabled INTEGER DEFAULT 1,
+    notification_id TEXT,
     created_at TEXT NOT NULL
   );`,
 ];

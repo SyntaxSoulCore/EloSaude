@@ -33,5 +33,6 @@ export type Reminder = {
   title: string;
   time: string;
   enabled: number;
+  notification_id?: string | null;
   created_at: string;
 };

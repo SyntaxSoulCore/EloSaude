@@ -2,7 +2,7 @@ import { openDatabaseSync } from 'expo-sqlite';
 import { runMigrations } from './migrations';
 import { seedDatabase } from './seed';
 import { computeBloodPressureStatus } from '@/src/services/healthStatus';
-import type { HealthRecord, Medication } from '@/src/types/health';
+import type { HealthRecord, Medication, Reminder } from '@/src/types/health';
 
 const db = openDatabaseSync('cuidar-plus.db');
 
@@ -90,10 +90,10 @@ export const addMedication = (payload: {
 };
 
 export const getReminders = () =>
-  db.getAllSync<import('@/src/types/health').Reminder>('SELECT * FROM reminders ORDER BY time ASC');
+  db.getAllSync<Reminder>('SELECT * FROM reminders ORDER BY time ASC');
 
-export const setReminderEnabled = (id: string, enabled: boolean) => {
-  db.runSync('UPDATE reminders SET enabled=? WHERE id=?', [enabled ? 1 : 0, id]);
+export const setReminderEnabled = (id: string, enabled: boolean, notificationId: string | null) => {
+  db.runSync('UPDATE reminders SET enabled=?, notification_id=? WHERE id=?', [enabled ? 1 : 0, notificationId, id]);
 };
 
 export default db;
