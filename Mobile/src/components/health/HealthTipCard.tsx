@@ -1,8 +1,19 @@
+import { Ionicons } from '@expo/vector-icons';
 import { Text, View } from 'react-native';
 import { Card } from '@/src/components/ui/Card';
 import { IconBox } from '@/src/components/ui/IconBox';
 
-export function HealthTipCard({ title, text, icon, bg }: { title: string; text: string; icon: any; bg: string }) {
+export function HealthTipCard({
+  title,
+  text,
+  icon,
+  bg,
+}: {
+  title: string;
+  text: string;
+  icon: keyof typeof Ionicons.glyphMap;
+  bg: string;
+}) {
   return (
     <Card style={{ backgroundColor: bg }}>
       <View style={{ flexDirection: 'row', gap: 12 }}>
