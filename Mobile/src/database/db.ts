@@ -96,8 +96,4 @@ export const setReminderEnabled = (id: string, enabled: boolean, notificationId:
   db.runSync('UPDATE reminders SET enabled=?, notification_id=? WHERE id=?', [enabled ? 1 : 0, notificationId, id]);
 };
 
-export const setReminderNotificationId = (id: string, notificationId: string | null) => {
-  db.runSync('UPDATE reminders SET notification_id=? WHERE id=?', [notificationId, id]);
-};
-
 export default db;
