@@ -16,11 +16,18 @@ export const getUserName = () => {
   return row?.name ?? 'Marcos';
 };
 
-export const getDashboardMetrics = () => {
-  return db.getAllSync<HealthRecord>(
-    `SELECT * FROM health_records WHERE type IN ('blood_pressure', 'glucose', 'cholesterol') ORDER BY measured_at DESC LIMIT 3`
+export const getDashboardMetrics = () =>
+  db.getAllSync<HealthRecord>(
+    `SELECT *
+     FROM health_records hr
+     WHERE hr.type IN ('blood_pressure', 'glucose', 'cholesterol')
+       AND hr.measured_at = (SELECT MAX(measured_at) FROM health_records WHERE type = hr.type)
+     ORDER BY CASE hr.type
+       WHEN 'blood_pressure' THEN 1
+       WHEN 'glucose' THEN 2
+       WHEN 'cholesterol' THEN 3
+     END`
   );
-};
 
 export const getLatestBloodPressure = () => {
   return db.getFirstSync<HealthRecord>(
