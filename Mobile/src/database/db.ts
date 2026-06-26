@@ -88,7 +88,8 @@ export const addMedication = (payload: {
   );
 };
 
-export const getReminders = () => db.getAllSync<any>('SELECT * FROM reminders ORDER BY time ASC');
+export const getReminders = () =>
+  db.getAllSync<import('@/src/types/health').Reminder>('SELECT * FROM reminders ORDER BY time ASC');
 
 export const setReminderEnabled = (id: string, enabled: boolean) => {
   db.runSync('UPDATE reminders SET enabled=? WHERE id=?', [enabled ? 1 : 0, id]);
