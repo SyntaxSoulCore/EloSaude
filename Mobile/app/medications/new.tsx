@@ -20,6 +20,7 @@ export default function NewMedicationScreen() {
     if (!name.trim()) return Alert.alert('Validação', 'Nome é obrigatório.');
     if (!dosage.trim()) return Alert.alert('Validação', 'Dosagem é obrigatória.');
     if (!time.trim()) return Alert.alert('Validação', 'Informe pelo menos um horário.');
+    if (!/^\d{2}:\d{2}$/.test(time)) return Alert.alert('Validação', 'Horário inválido. Use HH:MM.');
 
     addMedication({ name, dosage, frequency, time, startDate, observation });
 
