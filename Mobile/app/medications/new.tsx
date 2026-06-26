@@ -22,12 +22,13 @@ export default function NewMedicationScreen() {
     if (!time.trim()) return Alert.alert('Validação', 'Informe pelo menos um horário.');
     if (!/^\d{2}:\d{2}$/.test(time)) return Alert.alert('Validação', 'Horário inválido. Use HH:MM.');
 
-    addMedication({ name, dosage, frequency, time, startDate, observation });
-
+    let notificationId: string | undefined;
     const granted = await ensureNotificationPermission();
     if (granted) {
-      await scheduleDailyNotification(name, `Hora de tomar ${dosage}`, time);
+      notificationId = await scheduleDailyNotification(name, `Hora de tomar ${dosage}`, time);
     }
+
+    addMedication({ name, dosage, frequency, time, startDate, observation, notificationId });
 
     Alert.alert('Sucesso', 'Medicamento salvo com lembrete.');
     router.back();

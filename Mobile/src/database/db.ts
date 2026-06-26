@@ -73,6 +73,7 @@ export const addMedication = (payload: {
   time: string;
   startDate?: string;
   observation?: string;
+  notificationId?: string;
 }) => {
   const now = new Date().toISOString();
   const id = `med-${Date.now()}`;
@@ -82,9 +83,9 @@ export const addMedication = (payload: {
     [id, payload.name, payload.dosage, payload.frequency, payload.startDate ?? now, payload.observation ?? null, now, now]
   );
   db.runSync(
-    `INSERT INTO medication_schedules (id, medication_id, time, enabled, created_at)
-      VALUES (?, ?, ?, 1, ?)`,
-    [`sch-${Date.now()}`, id, payload.time, now]
+    `INSERT INTO medication_schedules (id, medication_id, time, enabled, notification_id, created_at)
+      VALUES (?, ?, ?, 1, ?, ?)`,
+    [`sch-${Date.now()}`, id, payload.time, payload.notificationId ?? null, now]
   );
 };
 
