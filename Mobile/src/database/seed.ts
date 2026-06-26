@@ -12,7 +12,7 @@ export const seedDatabase = (db: SQLiteDatabase) => {
 
     INSERT INTO health_records (id, type, systolic, diastolic, value, unit, status, observation, measured_at, created_at)
     VALUES
-      ('bp-1', 'blood_pressure', 130, 80, NULL, 'mmHg', 'Normal', NULL, '${now}', '${now}'),
+      ('bp-1', 'blood_pressure', 130, 80, NULL, 'mmHg', 'Atenção', NULL, '${now}', '${now}'),
       ('glu-1', 'glucose', NULL, NULL, 98, 'mg/dL', 'Normal', 'em jejum', '${now}', '${now}'),
       ('chol-1', 'cholesterol', NULL, NULL, 190, 'mg/dL', 'Atenção', NULL, '${now}', '${now}');
 
