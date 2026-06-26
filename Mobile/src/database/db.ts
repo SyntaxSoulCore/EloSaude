@@ -71,9 +71,9 @@ export const addMedication = (payload: {
   dosage: string;
   frequency: string;
   time: string;
+  notificationId?: string | null;
   startDate?: string;
   observation?: string;
-  notificationId?: string;
 }) => {
   const now = new Date().toISOString();
   const id = `med-${Date.now()}`;
@@ -94,6 +94,10 @@ export const getReminders = () =>
 
 export const setReminderEnabled = (id: string, enabled: boolean, notificationId: string | null) => {
   db.runSync('UPDATE reminders SET enabled=?, notification_id=? WHERE id=?', [enabled ? 1 : 0, notificationId, id]);
+};
+
+export const setReminderNotificationId = (id: string, notificationId: string | null) => {
+  db.runSync('UPDATE reminders SET notification_id=? WHERE id=?', [notificationId, id]);
 };
 
 export default db;

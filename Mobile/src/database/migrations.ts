@@ -4,14 +4,13 @@ import { schemaStatements } from './schema';
 export const runMigrations = (db: SQLiteDatabase) => {
   schemaStatements.forEach((statement) => db.execSync(statement));
 
-  // Add notification_id column to medication_schedules if it doesn't exist (migration for existing DBs)
-  const cols = db.getAllSync<{ name: string }>("PRAGMA table_info(medication_schedules)");
-  if (!cols.some((c) => c.name === 'notification_id')) {
+  const medicationScheduleColumns = db.getAllSync<{ name: string }>('PRAGMA table_info(medication_schedules)');
+  if (!medicationScheduleColumns.some((c) => c.name === 'notification_id')) {
     db.execSync('ALTER TABLE medication_schedules ADD COLUMN notification_id TEXT');
   }
 
-  const reminderColumns = db.getAllSync<{ name: string }>('PRAGMA table_info(reminders);');
-  if (!reminderColumns.some((column) => column.name === 'notification_id')) {
-    db.execSync('ALTER TABLE reminders ADD COLUMN notification_id TEXT;');
+  const reminderColumns = db.getAllSync<{ name: string }>('PRAGMA table_info(reminders)');
+  if (!reminderColumns.some((c) => c.name === 'notification_id')) {
+    db.execSync('ALTER TABLE reminders ADD COLUMN notification_id TEXT');
   }
 };

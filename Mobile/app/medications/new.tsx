@@ -20,17 +20,17 @@ export default function NewMedicationScreen() {
     if (!name.trim()) return Alert.alert('Validação', 'Nome é obrigatório.');
     if (!dosage.trim()) return Alert.alert('Validação', 'Dosagem é obrigatória.');
     if (!time.trim()) return Alert.alert('Validação', 'Informe pelo menos um horário.');
-    if (!/^\d{2}:\d{2}$/.test(time)) return Alert.alert('Validação', 'Horário inválido. Use HH:MM.');
+    if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) return Alert.alert('Validação', 'Horário deve estar no formato HH:MM.');
 
-    let notificationId: string | undefined;
+    let notificationId: string | null = null;
     const granted = await ensureNotificationPermission();
     if (granted) {
       notificationId = await scheduleDailyNotification(name, `Hora de tomar ${dosage}`, time);
     }
 
-    addMedication({ name, dosage, frequency, time, startDate, observation, notificationId });
+    addMedication({ name, dosage, frequency, time, notificationId, startDate, observation });
 
-    Alert.alert('Sucesso', 'Medicamento salvo com lembrete.');
+    Alert.alert('Sucesso', granted ? 'Medicamento salvo com lembrete.' : 'Medicamento salvo sem lembrete.');
     router.back();
   };
 
